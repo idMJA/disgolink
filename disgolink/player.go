@@ -62,7 +62,7 @@ func (p *Player) Update(ctx context.Context, opts ...PlayerUpdateOpt) error {
 	}
 
 	update := defaultPlayerUpdate()
-	update.apply(opts)
+	playerUpdateApply(&update, opts)
 
 	updatedPlayer, err := p.Node.Rest.UpdatePlayer(ctx, p.Node.SessionID, p.GuildID, update)
 	if err != nil {
@@ -186,7 +186,7 @@ func (p *Player) OnVoiceStateUpdate(ctx context.Context, channelID *snowflake.ID
 }
 
 func (p *Player) sendVoiceUpdate(ctx context.Context) error {
-	if _, err := p.Node.Rest.UpdatePlayer(ctx, p.Node.SessionID, p.GuildID, PlayerUpdate{
+	if _, err := p.Node.Rest.UpdatePlayer(ctx, p.Node.SessionID, p.GuildID, lavalink.PlayerUpdate{
 		Voice: &p.Voice,
 	}); err != nil {
 		return fmt.Errorf("error while sending voice update: %w", err)
